@@ -2,12 +2,14 @@ package com.example.exception.controller;
 
 import com.example.exception.Model.Api;
 import com.example.exception.Model.UserResponse;
+import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.rmi.AccessException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,10 @@ public class UserApiController {
     public Api<UserResponse> getUser(                        //Api로 감싸진 user라는 응답을 내림
             @PathVariable String userId                     //위 {userId}와 동일
     ){
-                                                            //var user=userList.get(userId); get()은 리스트의 인덱스가 들어와서 사용 못함
-        var user=userList.stream()
+        if(true)
+            throw new RuntimeException("message");//global exception을 위해 임의의 에러 유발
+
+             var user=userList.stream() //var user=userList.get(userId); get()은 리스트의 인덱스가 들어와서 사용 못함
                 .filter(it -> it.getId().equals(userId))    //it: userList에 있는 객체들(현재 2개임)
                 .findFirst()                               //user는 옵셔널한 데이터
                 .get();//해당 userId가 같은 userList의 요소를 가져옴(null일 수도 있음)

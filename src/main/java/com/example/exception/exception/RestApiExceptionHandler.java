@@ -2,6 +2,7 @@ package com.example.exception.exception;
 
 import com.example.exception.Model.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,15 +12,16 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice//REST API가 사용하는 곳에 예외가 일어나는 것을 감지
+@Order(1)//global=max 이기 때문에, restapi~handler가 먼저 실행됨(우선순위 높음)
 public class RestApiExceptionHandler {
 
-    @ExceptionHandler(value = {Exception.class})//모든 예외를 감지하는 핸들러, {}: 예외를 감지할 클래스 명
-    public ResponseEntity Exception( //이건 글로벌 예외처리임, 실전적용-2에서는 여기서 글로벌하게 사용하지 않을거라고 함
+   /* @ExceptionHandler(value = {Exception.class})//모든 예외를 감지하는 핸들러, {}: 예외를 감지할 클래스 명
+    public ResponseEntity Exception( //이건 글로벌 예외처리임, 실전적용-2에서는 여기서 글로벌하게 사용하지 않을거라고 함, 그래서 주석 처리
             Exception e
     ){
         log.error("RestApiExceptionHandler",e);
         return ResponseEntity.status(200).build();//body()설정 안하고 빌드 -> RESPONSE에 BODY 없음
-    }
+    }*/
 
     @ExceptionHandler(value = {IndexOutOfBoundsException.class}) //IndexOutof~ 대한 예외는 이 메서드에서 잡겠다.
     public ResponseEntity OutOfBound(IndexOutOfBoundsException e){
